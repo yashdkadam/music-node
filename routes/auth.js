@@ -30,7 +30,3 @@ function validate(req) {
 }
 
 module.exports = router;
-
-////lBw3YcAZIJQfvIP6
-
-//mongodb://vidlyuser:lBw3YcAZIJQfvIP6@vidly-shard-00-00.ippnq.mongodb.net:27017,vidly-shard-00-01.ippnq.mongodb.net:27017,vidly-shard-00-02.ippnq.mongodb.net:27017/Vidly?ssl=true&replicaSet=atlas-5z0jg7-shard-0&authSource=admin&retryWrites=true&w=majority
