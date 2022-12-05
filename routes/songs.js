@@ -16,8 +16,8 @@ router.get("/", async (req, res) => {
 router.post("/", [auth], async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
-  const songs = await Song.find({
-    $or: [{ url: req.params.url }, { sid: req.params.sid }],
+  const songs = await Song.findOne({
+    $or: [{ url: req.body.url }, { sid: req.body.sid }],
   });
   if (songs) {
     res.status(403).send("Record already exists");
