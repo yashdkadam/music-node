@@ -16,23 +16,25 @@ router.get("/", async (req, res) => {
 router.post("/", [auth], async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
-
-  const song = new Song({
-    url: req.body.url,
-    sid: req.body.sid,
-    name: req.body.name,
-    artist: req.body.artist,
-    imgUrl: req.body.imgUrl,
-    previewUrl: req.body.previewUrl,
-    album: req.body.album,
-    popularity: req.body.popularity,
-    publishDate: moment().toJSON(),
+  const songs = await Song.find({
+    $or: [{ url: req.params.url }, { sid: req.params.sid }],
   });
-  try {
+  if (songs) {
+    res.status(403).send("Record already exists");
+  } else {
+    const song = new Song({
+      url: req.body.url,
+      sid: req.body.sid,
+      name: req.body.name,
+      artist: req.body.artist,
+      imgUrl: req.body.imgUrl,
+      previewUrl: req.body.previewUrl,
+      album: req.body.album,
+      popularity: req.body.popularity,
+      publishDate: moment().toJSON(),
+    });
     await song.save();
     res.send(song);
-  } catch (ex) {
-    res.status(403).send("Record already exists.");
   }
 });
 
