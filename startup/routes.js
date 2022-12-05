@@ -21,5 +21,6 @@ module.exports = function (app) {
   app.use("/api/auth", auth);
   app.use("/api/url", url);
   app.use("/api/returns", returns);
+  app.use(express.static("temp"));
   app.use(error);
 };

@@ -28,9 +28,12 @@ router.post("/", [auth], async (req, res) => {
     popularity: req.body.popularity,
     publishDate: moment().toJSON(),
   });
-  await song.save();
-
-  res.send(song);
+  try {
+    await song.save();
+    res.send(song);
+  } catch (ex) {
+    res.status(403).send("Record already exists.");
+  }
 });
 
 router.put("/:id", [auth], async (req, res) => {
@@ -74,6 +77,56 @@ router.get("/:id", validateObjectId, async (req, res) => {
     return res.status(404).send("The Song with the given ID was not found.");
 
   res.send(song);
+});
+
+router.get("/byartist/:name", async (req, res) => {
+  const songs = await Song.find({ artist: req.params.name }).sort({
+    popularity: -1,
+  });
+
+  if (!songs)
+    return res.status(404).send("The Song with the given ID was not found.");
+
+  res.send(songs);
+});
+
+router.get("/byalbum/:name", async (req, res) => {
+  const songs = await Song.find({ album: req.params.name }).sort({
+    popularity: -1,
+  });
+
+  if (!songs)
+    return res.status(404).send("The Song with the given ID was not found.");
+
+  res.send(songs);
+});
+
+router.get("/search/:name", async (req, res) => {
+  const songs = await Song.find({
+    name: { $regex: req.params.name, $options: "i" },
+  }).sort({ popularity: -1 });
+
+  if (!songs)
+    return res.status(404).send("The Song with the given ID was not found.");
+
+  res.send(songs);
+});
+
+router.get("/get/artists", async (req, res) => {
+  const artists = await Song.distinct("artist");
+
+  if (!artists)
+    return res.status(404).send("The artist with the given ID was not found.");
+
+  res.send(artists);
+});
+router.get("/get/albums", async (req, res) => {
+  const albums = await Song.distinct("album");
+
+  if (!albums)
+    return res.status(404).send("The album with the given ID was not found.");
+
+  res.send(albums);
 });
 
 module.exports = router;
