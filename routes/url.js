@@ -5,19 +5,6 @@ const https = require("https");
 const http = require("http");
 const fs = require("fs");
 
-function download(url) {
-  const file = fs.createWriteStream("/temp/temp.mp3");
-  const request = https.get(url, function (response) {
-    response.pipe(file);
-
-    // after download completed close filestream
-    file.on("finish", () => {
-      file.close();
-      console.log("Download Completed");
-    });
-  });
-}
-
 router.get("/:id", async (req, res) => {
   request(
     "https://apiyoutube.cc/check.php?callback=jQuery34108672477917974195_1666787018121&v=" +
@@ -32,19 +19,8 @@ router.get("/:id", async (req, res) => {
           response["hash"] +
           "::" +
           response["user"];
-        download(mp3Url);
-        fs.readFile("/temp.mp3", function (err, result) {
-          res.send(
-            "data:audio/mpeg" +
-              ";base64,".base64_encode(file_get_contents($file))
-          );
-          res.send(result.toString("base64"));
-        });
-        // const obj = { url: mp3Url };
-        // res.send(obj);
-      } else {
-        res.status(404);
-        res.send("error occured");
+        const obj = { url: mp3Url };
+        res.send(obj);
       }
     }
   );
