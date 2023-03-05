@@ -1,5 +1,11 @@
 const cors = require("cors");
 
 module.exports = function(app) {
-  app.use(cors());
+  app.UseCors((x) =>
+    x
+      .AllowAnyMethod()
+      .AllowAnyHeader()
+      .SetIsOriginAllowed((origin) => true) 
+      .AllowCredentials()
+  );
 };
