@@ -12,6 +12,7 @@ const Question = mongoose.model(
       required: true,
       min: 0,
       max: 100000,
+      unique: true,
     },
     title: {
       type: String,
