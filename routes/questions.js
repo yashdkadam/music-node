@@ -14,6 +14,9 @@ router.post("/", [auth], async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
+  let qid = await Question.findOne({ qid: req.body.qid });
+  if (qid) return res.status(400).send("Question already registered.");
+
   const question = new Question({
     qid: req.body.qid,
     title: req.body.title,
