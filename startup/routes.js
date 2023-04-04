@@ -9,6 +9,7 @@ const auth = require("../routes/auth");
 const torrents = require("../routes/torrents");
 const returns = require("../routes/returns");
 const url = require("../routes/url");
+const questions = require("../routes/questions");
 const error = require("../middleware/error");
 
 module.exports = function (app) {
@@ -23,6 +24,8 @@ module.exports = function (app) {
   app.use("/api/torrents", torrents);
   app.use("/api/url", url);
   app.use("/api/returns", returns);
+    app.use("/api/questions", questions);
+
   app.use(express.static("temp"));
   app.use(error);
 };
