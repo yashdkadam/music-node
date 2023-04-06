@@ -54,7 +54,9 @@ router.put("/:id", [auth], async (req, res) => {
   );
 
   if (!question)
-    return res.status(404).send("The Question with the given ID was not found.");
+    return res
+      .status(404)
+      .send("The Question with the given ID was not found.");
 
   res.send(question);
 });
@@ -63,7 +65,9 @@ router.delete("/:id", [auth, admin], async (req, res) => {
   const question = await Question.findByIdAndRemove(req.params.id);
 
   if (!question)
-    return res.status(404).send("The Question with the given ID was not found.");
+    return res
+      .status(404)
+      .send("The Question with the given ID was not found.");
 
   res.send(question);
 });
@@ -72,7 +76,63 @@ router.get("/:id", validateObjectId, async (req, res) => {
   const question = await Question.findById(req.params.id).select("-__v");
 
   if (!question)
-    return res.status(404).send("The Question with the given ID was not found.");
+    return res
+      .status(404)
+      .send("The Question with the given ID was not found.");
+
+  res.send(question);
+});
+
+router.get("/search/titleslug/:id", async (req, res) => {
+  const question = await Question.find({titleSlug: req.params.id}).select("-__v");
+
+  if (!question)
+    return res
+      .status(404)
+      .send("The Question with the given ID was not found.");
+
+  res.send(question);
+});
+
+router.get("/search/qid/:id", async (req, res) => {
+  const question = await Question.find({"qid": req.params.id}).select("-__v");
+  if (!question)
+    return res
+      .status(404)
+      .send("The Question with the given ID was not found.");
+
+  res.send(question);
+});
+
+router.get("/search/name/:id", async (req, res) => {
+  const question = await Question.find({"name": req.params.id}).select("-__v");
+  if (!question)
+    return res
+      .status(404)
+      .send("The Question with the given ID was not found.");
+
+  res.send(question);
+});
+
+router.get("/search/company/:id", async (req, res) => {
+  const question = await Question.find(
+    { "companyTags.company": req.params.id },
+    {
+      qid: 1,
+      title: 1,
+      titleSlug: 1,
+      topicTags: 1,
+      acceptanceRate: 1,
+      difficulty: 1,
+      isPaidonly: 1,
+      companyTags: 1,
+    }
+  );
+
+  if (!question)
+    return res
+      .status(404)
+      .send("The Question with the given ID was not found.");
 
   res.send(question);
 });
