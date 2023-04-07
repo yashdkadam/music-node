@@ -122,6 +122,7 @@ router.get("/get/artists", async (req, res) => {
 
   res.send(artists);
 });
+
 router.get("/get/albums", async (req, res) => {
   const albums = await Song.distinct("album");
 
