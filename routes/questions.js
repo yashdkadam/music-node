@@ -146,7 +146,7 @@ router.get("/search/company/:id", async (req, res) => {
       topicTags: 1,
       acceptanceRate: 1,
       difficulty: 1,
-      isPaidonly: 1,
+      isPaidOnly: 1,
       companyTags: 1,
     }
   );
