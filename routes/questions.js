@@ -72,6 +72,27 @@ router.delete("/:id", [auth, admin], async (req, res) => {
   res.send(question);
 });
 
+router.get("/companies", async (req, res) => {
+  const question = await Question.distinct("companyTags.company")
+
+  if (!question)
+    return res
+      .status(404)
+      .send("The Question with the given ID was not found.");
+
+  res.send(question);
+});
+
+router.get("/topics", async (req, res) => {
+  const question = await Question.distinct("topicTags")
+
+  if (!question)
+    return res
+      .status(404)
+      .send("The Question with the given ID was not found.");
+
+  res.send(question);
+});
 router.get("/:id", validateObjectId, async (req, res) => {
   const question = await Question.findById(req.params.id).select("-__v");
 
@@ -83,27 +104,6 @@ router.get("/:id", validateObjectId, async (req, res) => {
   res.send(question);
 });
 
-router.get("/get/company", async (req, res) => {
-  const question = await Question.distinct("companyTags.company")
-
-  if (!question)
-    return res
-      .status(404)
-      .send("The Question with the given ID was not found.");
-
-  res.send(question);
-});
-
-router.get("/get/topics", async (req, res) => {
-  const question = await Question.distinct("topicTags")
-
-  if (!question)
-    return res
-      .status(404)
-      .send("The Question with the given ID was not found.");
-
-  res.send(question);
-});
 
 router.get("/search/titleslug/:id", async (req, res) => {
   const question = await Question.find({titleSlug: req.params.id}).select("-__v");
